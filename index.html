@@ -42,7 +42,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
 a { color: var(--accent-2); text-decoration: none; }
@@ -235,6 +235,51 @@ footer {
   color: var(--text-faint);
 }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.in-view { opacity: 1; transform: translateY(0); }
+
+.project:nth-of-type(2) { transition-delay: 0.06s; }
+.project:nth-of-type(3) { transition-delay: 0.12s; }
+.project:nth-of-type(4) { transition-delay: 0.18s; }
+.cap-row:nth-of-type(2) { transition-delay: 0.06s; }
+.cap-row:nth-of-type(3) { transition-delay: 0.12s; }
+.cap-row:nth-of-type(4) { transition-delay: 0.18s; }
+.cap-row:nth-of-type(5) { transition-delay: 0.24s; }
+.lab-item:nth-of-type(2) { transition-delay: 0.08s; }
+.lab-item:nth-of-type(3) { transition-delay: 0.16s; }
+
+.project, .lab-item {
+  transition: opacity 0.7s ease, transform 0.7s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.lab-item:hover {
+  border-color: var(--accent-2);
+  background: var(--panel-2);
+}
+
+nav a {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background: var(--accent-2);
+  transition: width 0.25s ease;
+}
+
+nav a:hover::after { width: 100%; }
+
 #termHintBox {
   position: fixed;
   right: 20px;
@@ -355,56 +400,58 @@ footer {
 .term-output .tkv .v { color: var(--text); }
 .term-output .tkv .v.accent { color: var(--accent); }
 
-#termForm {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.term-controls {
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
-  padding: 12px 18px;
+  padding: 14px 18px 18px;
   border-top: 1px solid var(--border-soft);
   flex-shrink: 0;
+  max-height: 42vh;
+  overflow-y: auto;
 }
 
-.tps1 { color: var(--accent-2); font-family: var(--mono); font-size: 14px; white-space: nowrap; }
-
-#cmd {
-  flex: 1;
-  min-width: 0;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 14px;
-  caret-color: var(--accent);
-}
-
-.term-chips {
+.term-row {
   display: flex;
+  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 18px 16px;
+  margin-bottom: 10px;
+}
+
+.term-row:last-child { margin-bottom: 0; }
+
+.term-row-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  min-width: 62px;
   flex-shrink: 0;
 }
 
-.term-chips button {
+.term-row button {
   background: var(--panel);
   border: 1px solid var(--border);
   color: var(--text-dim);
   font-family: var(--mono);
-  font-size: 12px;
-  padding: 6px 11px;
+  font-size: 12.5px;
+  padding: 7px 12px;
   border-radius: 3px;
   cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
-.term-chips button:hover { color: var(--text); border-color: var(--accent-2); }
+.term-row button:hover, .term-row button:active {
+  color: var(--text);
+  border-color: var(--accent-2);
+  background: var(--panel-2);
+}
+
+@media (max-width: 600px) {
+  .term-row-label { min-width: 100%; margin-bottom: 2px; }
+}
 </style>
+
 </head>
 <body>
 <div class="frame">
@@ -435,10 +482,10 @@ footer {
 </section>
 
 <section class="block" id="work">
-  <h2 class="block-heading">Selected work</h2>
-  <p class="block-sub">Four projects, from a capability-isolated microkernel OS to a wearable with real-time audio DSP. Code first, hardware second.</p>
+  <h2 class="block-heading reveal">Selected work</h2>
+  <p class="block-sub reveal">Four projects, from a capability-isolated microkernel OS to a wearable with real-time audio DSP. Code first, hardware second.</p>
 
-  <div class="project">
+  <div class="project reveal">
     <div>
       <h3 class="project-name">CapGuardOS</h3>
       <span class="project-status">In active development · private repository</span>
@@ -463,7 +510,7 @@ footer {
     </div>
   </div>
 
-  <div class="project">
+  <div class="project reveal">
     <div>
       <h3 class="project-name">url-uptime-monitor</h3>
       <span class="project-status">Public</span>
@@ -475,7 +522,7 @@ footer {
     </div>
   </div>
 
-  <div class="project">
+  <div class="project reveal">
     <div>
       <h3 class="project-name">Networking lab project</h3>
       <span class="project-status">Public · graded 100/100</span>
@@ -487,7 +534,7 @@ footer {
     </div>
   </div>
 
-  <div class="project">
+  <div class="project reveal">
     <div>
       <h3 class="project-name">Voice-changer mask</h3>
       <span class="project-status">In development</span>
@@ -501,26 +548,26 @@ footer {
 </section>
 
 <section class="block" id="capabilities">
-  <h2 class="block-heading">Capabilities</h2>
-  <p class="block-sub">What I actually reach for, grouped by area rather than listed as a wall of tags.</p>
+  <h2 class="block-heading reveal">Capabilities</h2>
+  <p class="block-sub reveal">What I actually reach for, grouped by area rather than listed as a wall of tags.</p>
   <div class="cap-table">
-    <div class="cap-row">
+    <div class="cap-row reveal">
       <div class="cap-term">systems</div>
       <div class="cap-desc">C, the seL4 microkernel, capability-based isolation, Arch Linux internals, systemd-boot with Unified Kernel Images, LUKS full-disk encryption, btrfs.</div>
     </div>
-    <div class="cap-row">
+    <div class="cap-row reveal">
       <div class="cap-term">security &amp; hardening</div>
       <div class="cap-desc">AppArmor, USBGuard, firewalld, Secure Boot signing, Wazuh, Fail2Ban, iptables, home-lab honeypots.</div>
     </div>
-    <div class="cap-row">
+    <div class="cap-row reveal">
       <div class="cap-term">networking</div>
       <div class="cap-desc">GNS3, VLSM subnetting, Wireshark, MikroTik.</div>
     </div>
-    <div class="cap-row">
+    <div class="cap-row reveal">
       <div class="cap-term">firmware &amp; hardware</div>
       <div class="cap-desc">ESP32-S3, embedded C, real-time audio DSP, RF and SDR tooling.</div>
     </div>
-    <div class="cap-row">
+    <div class="cap-row reveal">
       <div class="cap-term">delivery &amp; infra</div>
       <div class="cap-desc">Docker, GitHub Actions, Terraform, Prometheus and Grafana.</div>
     </div>
@@ -528,18 +575,18 @@ footer {
 </section>
 
 <section class="block" id="lab">
-  <h2 class="block-heading">In the lab</h2>
-  <p class="block-sub">Ongoing builds that don't have a finished write-up yet.</p>
+  <h2 class="block-heading reveal">In the lab</h2>
+  <p class="block-sub reveal">Ongoing builds that don't have a finished write-up yet.</p>
   <div class="lab-grid">
-    <div class="lab-item">
+    <div class="lab-item reveal">
       <h3>Hardened workstation</h3>
       <p>An Arch Linux laptop running two kernels side by side — stock and linux-hardened — with a Landlock, Lockdown, Yama, and AppArmor LSM stack, LUKS encryption, and a small home SOC built on Wazuh and honeypots.</p>
     </div>
-    <div class="lab-item">
+    <div class="lab-item reveal">
       <h3>Off-grid cyberdeck</h3>
       <p>A portable diagnostics rig in progress: Raspberry Pi 5, an RTL-SDR receiver, a mini oscilloscope, and a component tester, built into a rugged case.</p>
     </div>
-    <div class="lab-item">
+    <div class="lab-item reveal">
       <h3>Powered exoskeleton</h3>
       <p>Early-stage design work on a full-body powered exoskeleton — a ground-reaction load path, electric actuators, and force-following control.</p>
     </div>
@@ -547,8 +594,8 @@ footer {
 </section>
 
 <section class="block" id="contact">
-  <h2 class="block-heading">Get in touch</h2>
-  <div class="contact-grid">
+  <h2 class="block-heading reveal">Get in touch</h2>
+  <div class="contact-grid reveal">
     <p>Open to junior malware analyst and antivirus lab roles, and to conversations about capability-based security in general. GitHub is the one channel that's open — everything else stays off this page.</p>
     <div class="contact-links">
       <div><span class="label">github</span><a href="https://github.com/s1nkhole">github.com/s1nkhole</a></div>
@@ -576,28 +623,53 @@ footer {
     <button class="term-close" id="termClose">esc</button>
   </div>
   <div class="term-output" id="output"></div>
-  <form id="termForm">
-    <span class="tps1">guest@s1nkhole:~$</span>
-    <input id="cmd" type="text" autocomplete="off" autocapitalize="off" spellcheck="false">
-  </form>
-  <div class="term-chips">
-    <button type="button" data-cmd="help">help</button>
-    <button type="button" data-cmd="whoami">whoami</button>
-    <button type="button" data-cmd="work">work</button>
-    <button type="button" data-cmd="skills">skills</button>
-    <button type="button" data-cmd="lab">lab</button>
-    <button type="button" data-cmd="contact">contact</button>
+  <div class="term-controls">
+    <div class="term-row">
+      <span class="term-row-label">overview</span>
+      <button type="button" data-cmd="whoami">whoami</button>
+      <button type="button" data-cmd="skills">skills</button>
+      <button type="button" data-cmd="lab">lab</button>
+      <button type="button" data-cmd="contact">contact</button>
+    </div>
+    <div class="term-row">
+      <span class="term-row-label">work</span>
+      <button type="button" data-cmd="work">all</button>
+      <button type="button" data-cmd="work capguardos">capguardos</button>
+      <button type="button" data-cmd="work uptime-monitor">uptime-monitor</button>
+      <button type="button" data-cmd="work network-lab">network-lab</button>
+      <button type="button" data-cmd="work voice-mask">voice-mask</button>
+    </div>
+    <div class="term-row">
+      <span class="term-row-label">system</span>
+      <button type="button" data-cmd="help">help</button>
+      <button type="button" data-cmd="banner">banner</button>
+      <button type="button" data-cmd="sudo">sudo</button>
+      <button type="button" data-cmd="decrypt">decrypt</button>
+      <button type="button" data-cmd="clear">clear</button>
+    </div>
   </div>
 </div>
 
 <script>
+var revealTargets = document.querySelectorAll('.reveal');
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealTargets.forEach(function (el) { revealObserver.observe(el); });
+} else {
+  revealTargets.forEach(function (el) { el.classList.add('in-view'); });
+}
+</script>
+<script>
 var overlay = document.getElementById('termOverlay');
 var output = document.getElementById('output');
-var input = document.getElementById('cmd');
-var form = document.getElementById('termForm');
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var history = [];
-var historyIndex = -1;
 var booted = false;
 
 function scrollDown() { output.scrollTop = output.scrollHeight; }
@@ -746,8 +818,6 @@ function findProject(slug) {
   return null;
 }
 
-var COMMANDS = ['help', 'whoami', 'work', 'skills', 'lab', 'contact', 'clear', 'ls', 'banner'];
-
 function cmdHelp() {
   printText('available commands', 'ok');
   printGap();
@@ -759,7 +829,7 @@ function cmdHelp() {
   printText('contact           how to reach out', 'dim');
   printText('clear             clear the terminal', 'dim');
   printGap();
-  printText('try: work capguardos', 'faint');
+  printText('use the buttons below to explore', 'faint');
 }
 
 function cmdWhoami() {
@@ -787,7 +857,7 @@ function cmdWork(args) {
     printText('  ' + PROJECTS[keys[i]].summary + ' -- ' + PROJECTS[keys[i]].status, 'faint');
   }
   printGap();
-  printText('type \'work <name>\' for details, e.g. work capguardos', 'faint');
+  printText('tap a project button below for details', 'faint');
 }
 
 function cmdSkills() {
@@ -887,43 +957,14 @@ async function runCommand(raw) {
   else if (name === 'banner') { cmdBanner(); }
   else {
     printText('command not found: ' + name, 'warn');
-    printText('type \'help\' for a list of commands', 'faint');
+    printText('use the buttons below', 'faint');
   }
   printGap();
 }
 
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
-  var val = input.value;
-  history.push(val);
-  historyIndex = history.length;
-  input.value = '';
-  runCommand(val);
-});
-
-input.addEventListener('keydown', function (e) {
-  if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    if (historyIndex > 0) { historyIndex--; input.value = history[historyIndex]; }
-  } else if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    if (historyIndex < history.length - 1) { historyIndex++; input.value = history[historyIndex]; }
-    else { historyIndex = history.length; input.value = ''; }
-  } else if (e.key === 'Tab') {
-    e.preventDefault();
-    var partial = input.value.toLowerCase();
-    if (partial === '') { return; }
-    var matches = COMMANDS.filter(function (c) { return c.indexOf(partial) === 0; });
-    if (matches.length === 1) { input.value = matches[0]; }
-  } else if (e.key === 'Escape') {
-    closeTerminal();
-  }
-});
-
-document.querySelectorAll('.term-chips button').forEach(function (btn) {
+document.querySelectorAll('.term-row button').forEach(function (btn) {
   btn.addEventListener('click', function () {
-    input.value = btn.getAttribute('data-cmd');
-    input.focus();
+    runCommand(btn.getAttribute('data-cmd'));
   });
 });
 
@@ -945,14 +986,13 @@ async function bootTerminal() {
   printGap();
   cmdBanner();
   printGap();
-  printText('type \'help\' to see available commands', 'faint');
+  printText('tap a button below to run a command', 'faint');
   printGap();
 }
 
 function openTerminal() {
   overlay.classList.add('open');
   bootTerminal();
-  setTimeout(function () { input.focus(); }, 30);
 }
 
 function closeTerminal() {
@@ -967,6 +1007,8 @@ document.addEventListener('keydown', function (e) {
     e.preventDefault();
     if (overlay.classList.contains('open')) { closeTerminal(); }
     else { openTerminal(); }
+  } else if (e.key === 'Escape' && overlay.classList.contains('open')) {
+    closeTerminal();
   }
 });
 </script>
