@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>s1nkhole — Systems &amp; Security Engineer</title>
 <meta name="description" content="s1nkhole: capability-isolated operating systems, security tooling, and hardware/firmware projects.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2312161a'/%3E%3Ctext x='32' y='44' font-family='monospace' font-size='36' font-weight='700' fill='%234fb4a8' text-anchor='middle'%3E%3E%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="s1nkhole — Systems &amp; Security Engineer">
+<meta property="og:description" content="Capability-isolated operating systems, security tooling, and hardware/firmware projects.">
+<meta property="og:url" content="https://s1nkhole.is-a.dev/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="s1nkhole — Systems &amp; Security Engineer">
+<meta name="twitter:description" content="Capability-isolated operating systems, security tooling, and hardware/firmware projects.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,7 +25,7 @@
   --border-soft: #21282e;
   --text: #e7ecee;
   --text-dim: #8b98a3;
-  --text-faint: #5c6870;
+  --text-faint: #7c8891;
   --accent: #e8963c;
   --accent-2: #4fb4a8;
   --sans: 'IBM Plex Sans', -apple-system, sans-serif;
@@ -194,6 +202,16 @@ section.block:last-of-type { border-bottom: none; }
 
 .hw-specs { font-family: var(--mono); font-size: 12.5px; color: var(--text-faint); margin: 0 0 16px; }
 .proj-link { font-family: var(--mono); font-size: 13px; }
+.proj-link .badge { margin-top: 8px; height: 20px; vertical-align: middle; }
+.note-label { color: var(--text); font-weight: 500; }
+code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  color: var(--accent-2);
+  background: var(--panel-2);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
 
 .cap-table { border-top: 1px solid var(--border-soft); }
 
@@ -450,6 +468,23 @@ nav a:hover::after { width: 100%; }
 @media (max-width: 600px) {
   .term-row-label { min-width: 100%; margin-bottom: 2px; }
 }
+@media print {
+  #termHintBox, #termOverlay, footer { display: none !important; }
+  body { background: #fff; color: #111; }
+  .hero, .terminal, .diagram, .cap-row, .project, .lab-item {
+    background: #fff !important;
+    border-color: #ccc !important;
+    color: #111 !important;
+  }
+  .terminal .val, .terminal .val.accent, .cap-term, .project-name,
+  .block-heading, h1, .note-label { color: #111 !important; }
+  .role, .block-sub, .project-body p, .cap-desc, .lab-item p,
+  .text-dim, .terminal .prompt { color: #444 !important; }
+  a { color: #111 !important; text-decoration: underline; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .project, .cap-row, .lab-item { break-inside: avoid; }
+  img.badge { display: none; }
+}
 </style>
 
 </head>
@@ -507,6 +542,7 @@ nav a:hover::after { width: 100%; }
         <li>Storage service: an isolated in-memory filesystem, reachable only through a narrow IPC protocol</li>
       </ol>
       <p>Continuous integration builds from a clean checkout and boot-smoke-tests every component in QEMU on every push. A Dockerfile reproduces the full toolchain on any host, independent of the local dev machine.</p>
+      <p><span class="note-label">What didn't work the first time:</span> root originally used <code>seL4_Yield()</code> in its supervisor loop to let other components run. It turned out <code>seL4_Yield()</code> only cycles the ready queue within the caller's own priority level, so root looping on it starved every lower-priority child instead of yielding to them. Fixed by suspending root's own thread explicitly, later superseded entirely once the fault supervisor loop and explicit per-component priorities replaced the ad-hoc yield.</p>
     </div>
   </div>
 
@@ -518,7 +554,10 @@ nav a:hover::after { width: 100%; }
     <div class="project-body">
       <p class="lede">A health-check aggregator with a REST API, background polling, and full observability.</p>
       <p>Polls a set of target URLs on a schedule, stores the check history, and exposes results over a REST API built with FastAPI and SQLAlchemy. Metrics feed into Prometheus and Grafana, infrastructure is defined in Terraform, and CI runs lint and test on every push. Built as a portfolio project for an SRE internship interview.</p>
-      <p class="proj-link"><a href="https://github.com/s1nkhole/url-uptime-monitor">github.com/s1nkhole/url-uptime-monitor</a></p>
+      <p class="proj-link">
+        <a href="https://github.com/s1nkhole/url-uptime-monitor">github.com/s1nkhole/url-uptime-monitor</a><br>
+        <img class="badge" src="https://img.shields.io/github/last-commit/s1nkhole/url-uptime-monitor?style=flat-square&color=4fb4a8&labelColor=181d22" alt="last commit to url-uptime-monitor">
+      </p>
     </div>
   </div>
 
@@ -530,7 +569,10 @@ nav a:hover::after { width: 100%; }
     <div class="project-body">
       <p class="lede">VLSM subnetting, a GNS3 topology, and traffic analysis in Wireshark.</p>
       <p>Designed and documented a subnetted network topology in GNS3, then used Wireshark to verify traffic behavior at each hop. Submitted early to School 21 and graded 100 out of 100.</p>
-      <p class="proj-link"><a href="https://github.com/s1nkhole/s21-project-01-networking-gns3-wireshark">github.com/s1nkhole/s21-project-01-networking-gns3-wireshark</a></p>
+      <p class="proj-link">
+        <a href="https://github.com/s1nkhole/s21-project-01-networking-gns3-wireshark">github.com/s1nkhole/s21-project-01-networking-gns3-wireshark</a><br>
+        <img class="badge" src="https://img.shields.io/github/last-commit/s1nkhole/s21-project-01-networking-gns3-wireshark?style=flat-square&color=4fb4a8&labelColor=181d22" alt="last commit to networking lab project">
+      </p>
     </div>
   </div>
 
@@ -614,7 +656,7 @@ nav a:hover::after { width: 100%; }
   <button id="termHint" title="open console"><span>_</span></button>
 </div>
 
-<div id="termOverlay">
+<div id="termOverlay" role="dialog" aria-modal="true" aria-label="interactive console" aria-hidden="true">
   <div class="term-chrome">
     <span class="dot d1"></span>
     <span class="dot d2"></span>
@@ -990,13 +1032,25 @@ async function bootTerminal() {
   printGap();
 }
 
+var lastFocused = null;
+
+function getFocusable() {
+  return Array.prototype.slice.call(overlay.querySelectorAll('button'));
+}
+
 function openTerminal() {
+  lastFocused = document.activeElement;
   overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden', 'false');
   bootTerminal();
+  var focusables = getFocusable();
+  if (focusables.length) { focusables[0].focus(); }
 }
 
 function closeTerminal() {
   overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden', 'true');
+  if (lastFocused && typeof lastFocused.focus === 'function') { lastFocused.focus(); }
 }
 
 document.getElementById('termHint').addEventListener('click', openTerminal);
@@ -1007,8 +1061,25 @@ document.addEventListener('keydown', function (e) {
     e.preventDefault();
     if (overlay.classList.contains('open')) { closeTerminal(); }
     else { openTerminal(); }
-  } else if (e.key === 'Escape' && overlay.classList.contains('open')) {
+    return;
+  }
+  if (!overlay.classList.contains('open')) { return; }
+  if (e.key === 'Escape') {
     closeTerminal();
+    return;
+  }
+  if (e.key === 'Tab') {
+    var focusables = getFocusable();
+    if (!focusables.length) { return; }
+    var first = focusables[0];
+    var last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 });
 </script>
